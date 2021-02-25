@@ -39,8 +39,10 @@ namespace SpellTomePriceFixPatcher
             Console.WriteLine("value_multiplier: " + valueMultiplier);
             Console.WriteLine("*************************");
 
-            foreach (var book in state.LoadOrder.PriorityOrder.WinningOverrides<IBookGetter>())
+            foreach (var bookContext in state.LoadOrder.PriorityOrder.Book().WinningContextOverrides(state.LinkCache))
             {
+                System.Console.WriteLine($"Processing {bookContext.Record.FormKey} from mod {bookContext.ModKey}");
+                var book = bookContext.Record;
                 if (book.Keywords != null && book.Keywords.Contains(Skyrim.Keyword.VendorItemSpellTome)) {
                     Book bookToModify = book.DeepCopy();
                     bookToModify.Value = (uint)(bookToModify.Value * valueMultiplier);
